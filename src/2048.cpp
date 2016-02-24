@@ -55,13 +55,13 @@ uint16_t game2048::get_col(int col) const
     return ret;
 }
 
-inline void game2048::set_col(uint64_t& b, int col, uint16_t val)
+// static function member
+void game2048::set_col(uint64_t& b, int col, uint16_t val)
 {
-    for (int i = col*4, k=12; i < 64; i+=16, k-=4)
+    for (int i = 60-col*4, k=12; i >= 0; i-=16, k-=4)
     {
         const uint64_t x = (val >> k) & 0xf;
-        //board &= ~(0xfull << (60-i));  // efface les anciennes données, peut être évité sur une copie
-        b |= x << (60-i);
+        b |= x << i;
     }
 }
 
@@ -177,12 +177,13 @@ bool game2048::finished() const
 int game2048::randomEmptyIdx() const
 {
     static int t[16];
-    const uint64_t mask = ~board;
+    uint64_t mask = ~board;
     int j = 0;
-    for(int i=0, k=60; k>=0; ++i, k-=4)
+    for(int i=15; i>=0; --i)
     {
-        if (((mask >> k) & 0xf) == 0xf)
+        if ((mask & 0xf) == 0xf)
             t[j++] = i;
+        mask >>= 4;
     }
     return j==0 ? -1 : t[rand()%j];
 }
