@@ -21,7 +21,7 @@ void MC_IA(unsigned nb_runs)
             game2048 g = gm;
             bool ok = g.make_move((Direction)i);
             if (!ok) continue;
-            for (int j=0; j<nb_runs; ++j)
+            for (unsigned j=0; j<nb_runs; ++j)
             {
                 game2048 g2 = g;
                 g2.random_play();
