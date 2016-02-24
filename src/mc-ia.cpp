@@ -5,9 +5,8 @@
 
 using namespace std;
 
-#define NB   500
 
-void MC_IA()
+void MC_IA(unsigned nb_runs)
 {
     int counter = 0;
     // creating new board
@@ -17,12 +16,12 @@ void MC_IA()
         gm.next();
         //gm.display();
         uint64_t scores[4] = {0};
-        for (int i=0; i<4; ++i)
+        for (unsigned i=0; i<4; ++i)
         {
             game2048 g = gm;
             bool ok = g.make_move((Direction)i);
             if (!ok) continue;
-            for (int j=0; j<NB; ++j)
+            for (int j=0; j<nb_runs; ++j)
             {
                 game2048 g2 = g;
                 g2.random_play();

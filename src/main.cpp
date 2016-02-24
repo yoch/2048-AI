@@ -7,16 +7,21 @@
 
 using namespace std;
 
-void MC_IA();
+void MC_IA(unsigned);
 
+#define NB_RUNS 500
 
-int main()
+int main(int argc, char** argv)
 {
+    int nb_runs = argc > 1 ? 
+        atoi(argv[1]) : 
+        NB_RUNS;
+
     srand(time(NULL));
 
     game2048::init();
 
-    MC_IA();
+    MC_IA(nb_runs);
 
 /*
     game2048 gm;
