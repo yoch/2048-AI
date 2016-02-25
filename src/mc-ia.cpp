@@ -15,12 +15,15 @@ void MC_IA(unsigned nb_runs)
     {
         gm.next();
         //gm.display();
+
         uint64_t scores[4] = {0};
+        bool has_move = false;
         for (unsigned i=0; i<4; ++i)
         {
             game2048 g = gm;
-            bool ok = g.make_move((Direction)i);
-            if (!ok) continue;
+            if (!g.make_move((Direction)i))
+                continue;
+            has_move = true;
             for (unsigned j=0; j<nb_runs; ++j)
             {
                 game2048 g2 = g;
@@ -28,6 +31,8 @@ void MC_IA(unsigned nb_runs)
                 scores[i] += g2.score;
             }
         }
+        if (!has_move) break;
+
         int d = max_element(scores, scores+4) - scores;
         gm.make_move((Direction)d);
 

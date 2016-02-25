@@ -205,6 +205,24 @@ bool game2048::next()
     return true;
 }
 
+
+void game2048::random_play()
+{
+    while(!finished())
+    {
+        next();
+        int flags = 0;
+        while (flags != 0xf)
+        {
+            const int d = rand() % 4;
+            const int v = 1 << d;
+            if (!(flags & v) && make_move((Direction)d))
+                break;
+            flags |= v;
+        }
+    }
+}
+
 void game2048::display() const
 {
     for (int i=0, k=60; i < 16; ++i, k-=4)
@@ -318,15 +336,6 @@ void game2048::init()
     }
 }
 
-void game2048::random_play()
-{
-    while(!finished())
-    {
-        if (!make_move((Direction)(rand()%4)))
-            continue;
-        next();
-    }
-}
 
 #if PROFILE
 uint64_t game2048::Counter = 0;
