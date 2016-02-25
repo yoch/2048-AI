@@ -216,7 +216,9 @@ void game2048::random_play()
         {
             const int d = rand() % 4;
             const int v = 1 << d;
-            if (!(flags & v) && make_move((Direction)d))
+            if (flags & v)
+                continue;
+            if (make_move((Direction)d))
                 break;
             flags |= v;
         }
