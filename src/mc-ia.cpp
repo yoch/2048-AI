@@ -36,10 +36,11 @@ void MC_IA(unsigned nb_runs)
         int d = max_element(scores, scores+4) - scores;
         gm.make_move((Direction)d);
 
-        cout << ++counter << ") move " << "UDLR"[d] << endl;
+        cout << ++counter << ") " << "UDLR"[d];
 #if PROFILE
-        cout << "\ttotal moves: " << game2048::Counter << endl;
+        cout << "\t(moves: " << game2048::Counter << ")";
 #endif
+        cout << endl;
     }
     gm.display();
     cout << "END" << endl;
