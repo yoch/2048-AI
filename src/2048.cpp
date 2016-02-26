@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <cassert>
 #include <iostream>
 #include <array>
 #include "2048.h"
@@ -6,6 +7,7 @@
 using namespace std;
 
 #define N   0xffff
+
 
 static uint16_t moves_rd[N];    // right or down (normal moves)
 static uint16_t moves_lu[N];    // left or up (reversed moves)
@@ -15,13 +17,16 @@ static unsigned scores_lu[N];
 
 game2048::game2048() :
     board(0),
-    score(0)
-{}
-
-game2048::game2048(unsigned grid[4][4]) :
-    board(0),
     score(0),
     nplay(0)
+{
+#if DEBUG
+    tictac = false;
+#endif
+}
+
+game2048::game2048(unsigned grid[4][4]) :
+    game2048()
 {
     // init the board
     for (int i=0, k=60; i < 4; ++i)
@@ -71,6 +76,9 @@ bool game2048::move_right()
 #if PROFILE
     Counter++;
 #endif
+#if DEBUG
+    assert(tictac);
+#endif
     uint64_t nboard = 0;
     for (int i=0, k=48; i<4; ++i, k-=16)
     {
@@ -81,6 +89,9 @@ bool game2048::move_right()
     }
     if (board == nboard)
         return false;
+#if DEBUG
+    tictac = !tictac;
+#endif
     nplay++;
     board = nboard;
     return true;
@@ -90,6 +101,9 @@ bool game2048::move_left()
 {
 #if PROFILE
     Counter++;
+#endif
+#if DEBUG
+    assert(tictac);
 #endif
     uint64_t nboard = 0;
     for (int i=0, k=48; i<4; ++i, k-=16)
@@ -101,6 +115,9 @@ bool game2048::move_left()
     }
     if (board == nboard)
         return false;
+#if DEBUG
+    tictac = !tictac;
+#endif
     nplay++;
     board = nboard;
     return true;
@@ -110,6 +127,9 @@ bool game2048::move_up()
 {
 #if PROFILE
     Counter++;
+#endif
+#if DEBUG
+    assert(tictac);
 #endif
     uint64_t nboard = 0;
     for (int i=0; i<4; ++i)
@@ -121,6 +141,9 @@ bool game2048::move_up()
     }
     if (board == nboard)
         return false;
+#if DEBUG
+    tictac = !tictac;
+#endif
     nplay++;
     board = nboard;
     return true;
@@ -130,6 +153,9 @@ bool game2048::move_down()
 {
 #if PROFILE
     Counter++;
+#endif
+#if DEBUG
+    assert(tictac);
 #endif
     uint64_t nboard = 0;
     for (int i=0; i<4; ++i)
@@ -141,6 +167,9 @@ bool game2048::move_down()
     }
     if (board == nboard)
         return false;
+#if DEBUG
+    tictac = !tictac;
+#endif
     nplay++;
     board = nboard;
     return true;
@@ -198,9 +227,15 @@ bool game2048::isEmpty(size_t idx) const
 
 bool game2048::next()
 {
+#if DEBUG
+    assert(!tictac);
+#endif
     int index = randomEmptyIdx();
     if (index == -1)
         return false;
+#if DEBUG
+    tictac = !tictac;
+#endif
     _set(index * 4, rand() % 10 == 0 ? 0x2 : 0x1);
     return true;
 }
