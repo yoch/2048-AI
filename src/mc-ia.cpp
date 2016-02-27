@@ -42,6 +42,5 @@ void MC_IA(unsigned nb_runs)
 #endif
         cout << ")" << endl;
     }
-    gm.display();
-    cout << "END" << endl;
+    cout << gm << "END" << endl;
 }

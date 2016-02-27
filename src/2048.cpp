@@ -1,10 +1,28 @@
 #include <cstdlib>
 #include <cassert>
-#include <iostream>
 #include <array>
 #include "2048.h"
 
 using namespace std;
+
+
+#include <iostream>
+#include <iomanip>
+
+ostream& operator<<(ostream& os, const game2048& game)
+{
+    for (int i=0, k=60; i < 16; ++i, k-=4)
+    {
+        const int a = (game.board >> k) & 0xf;
+        os  << right << setw(6)
+            << (a ? 1 << a : 0)
+            << (i%4 == 3 ? '\n' : ',');
+    }
+    os << "\tscore is " << game.score << endl;
+    return os;
+}
+
+
 
 #define N   0xffff
 
@@ -260,15 +278,6 @@ void game2048::random_play()
     }
 }
 
-void game2048::display() const
-{
-    for (int i=0, k=60; i < 16; ++i, k-=4)
-    {
-        const int a = (board >> k) & 0xf;
-        cout << (a ? 1 << a : 0) << (i%4 == 3 ? "\n" : ",\t");
-    }
-    cout << "\tscore is " << score << endl;
-}
 
 
 ///*////////////////////////////////////////////////////////////////////
